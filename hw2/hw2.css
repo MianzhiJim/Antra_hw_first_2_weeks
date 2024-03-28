@@ -1,0 +1,30 @@
+.grid-container1 {
+    display: grid;
+    row-gap: 0px;
+    font-family: Arial;
+    text-align: center;
+}
+
+.grid-container2 {
+    column-count: 3;
+    font-family: Arial;
+    text-align: center;
+    padding-inline: 300px;
+}
+
+.para {
+    margin-block: 0px;
+}
+
+#bar-item {
+    color: aliceblue;
+    text-decoration: none;
+}
+
+#field1 {
+    background-color: #000;
+}
+
+#field2 {
+    background-color: #c6bfbf;
+}
