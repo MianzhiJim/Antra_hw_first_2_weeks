@@ -432,3 +432,91 @@ function q25(arr) {
 const i25 = ["Australia", "Germany", "United States of America"];
 const r25 = q25(i25);
 console.log('q25: ', r25);
+
+// 26. Write a JavaScript function to find longest substring in a given a string without repeating characters.
+function q26(str) {
+    let map = new Map();
+    for (let i = 0; i < str.length; i++) {
+        if (map[str[i]] === undefined) {
+            map[str[i]] = 1;
+        }
+        else {
+            map[str[i]]++;
+        }
+    }
+    let result = '';
+    let temp = '';
+    for (let key in map) {
+        if (map[key] === 1) {
+            temp += key;
+        }
+        else {
+            if (temp.length > result.length) {
+                result = temp;
+                temp = '';
+            }
+        }
+    }
+    return result;
+}
+
+const i26 = "abcdddabcdefgjfksssssooooo1234567890";
+const r26 = q26(i26);
+console.log('q26: ', r26);
+
+// 27. Write a JavaScript function that returns the longest palindrome in a given string. 
+// Note: According to Wikipedia "In computer science, the longest palindromic substring or longest symmetric factor problem is the problem of finding a maximum-length contiguous substring of a given string that is also a palindrome. For example, the longest palindromic substring of "bananas" is "anana". 
+// The longest palindromic substring is not guaranteed to be unique; for example, in the string "abracadabra", there is no palindromic substring with length greater than three, but there are two palindromic substrings with length three, namely, "aca" and "ada".
+// In some applications it may be necessary to return all maximal palindromic substrings (that is, all substrings that are themselves palindromes and cannot be extended to larger palindromic substrings) rather than returning only one substring or returning the maximum length of a palindromic substring.
+function q27(str) {
+    let palindrome = [];
+    let max_len = 0;
+
+    for (let i = 0; i < str.length; i++) {
+        let substr = str.substring(i, str.length);
+        for (let j = substr.length; j >= 0; j--) {
+            let sub_substr = substr.substring(0, j);
+            if (sub_substr.length <= 1) {
+                continue;
+            }
+            if (isPalindrome(sub_substr)) {
+                palindrome.push(sub_substr);
+                max_len = Math.max(max_len, sub_substr.length);
+            }
+        }
+    }
+
+    return palindrome.filter((str) => str.length === max_len);
+
+    function isPalindrome(str) {
+        let reverse = str.split('').reverse().join('');
+        return str === reverse;
+    }
+}
+
+i27 = "abracadabra";
+r27 = q27(i27);
+console.log('q27: ', r27);
+
+// 28. Write a JavaScript program to pass a 'JavaScript function' as parameter.
+function greeting() {
+    return 'Hello';
+}
+
+function q28(name, func) {
+    const greeting = func();
+    console.log(`q28: ${greeting}, ${name}!`);
+}
+
+q28('World', greeting);
+
+// 29. Write a JavaScript function to get the function name.
+function foo() {
+    return;
+}
+
+function q29(func) {
+    return func.name;
+}
+
+console.log(`q29: ${q29(foo)}`);
