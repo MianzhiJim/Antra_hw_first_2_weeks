@@ -397,25 +397,38 @@ const r23 = q23(i23);
 console.log('q23: ', r23);
 
 // 24. Write a JavaScript function to apply Bubble Sort algorithm.
-function q24(array) {
-    let swapped;
-    for (let i = 0; i < array.length; i++) {
-        swapped = false;
-        for (let j = i; j < array.length; j++) {
-            if (array[j] > array[j + 1]) {
-                let temp = array[j];
-                array[j] = array[j + 1];
-                array[j + 1] = temp;
-                swapped = true;
+function q24(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[i] < arr[j]) {
+                let temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
             }
         }
-        if (!swapped) {
-            break;
-        }
     }
-    return array;
+    return arr;
 }
 
-const i24 = [2, 0, 1, 4, 3];
+const i24 = [12, 345, 4, 546, 122, 84, 98, 64, 9, 1, 3223, 455, 23, 234, 21];
 const r24 = q24(i24);
 console.log('q24: ', r24);
+
+// 25. Write a JavaScript function that accept a list of country names as input and returns the longest country name as output. 
+// Sample function: Longest_Country_Name(["Australia", "Germany", "United States of America"])
+// Expected output: "United States of America"
+function q25(arr) {
+    let result = '';
+    let max = 0;
+    for (let a of arr) {
+        if (a.length > max) {
+            max = a.length;
+            result = a;
+        }
+    }
+    return result;
+}
+
+const i25 = ["Australia", "Germany", "United States of America"];
+const r25 = q25(i25);
+console.log('q25: ', r25);
