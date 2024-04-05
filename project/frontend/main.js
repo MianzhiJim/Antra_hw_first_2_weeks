@@ -30,6 +30,19 @@ const View = (() => {
         return temp;
     }
 
+    const createTmp2 = (arr) => {
+        let temp = "";
+        arr.forEach(course => {
+            temp += `<li>
+            <p>${course[0]}<br />
+            Course type: ${course[1]}<br />
+            Course credit: ${course[2]}
+            </p>
+            </li>`;
+        });
+        return temp;
+    }
+
     const render = (ele, tmp) => {
         ele.innerHTML = tmp;
     };
@@ -37,13 +50,14 @@ const View = (() => {
     return {
         domStr,
         createTmp,
+        createTmp2,
         render
     }
 })();
 
 const Model = ((view, api) => {
     const {getData} = api;
-    const {domStr, createTmp, render} = view;
+    const {domStr, createTmp, createTmp2, render} = view;
 
     class Available {
         constructor() {
@@ -69,8 +83,8 @@ const Model = ((view, api) => {
         }
         set newCourseList(arr) {
             this._courseList = arr;
-            const availableContainer = document.querySelector(domStr.available);
-            const tmp = createTmp(this._courseList);
+            const availableContainer = document.querySelector(domStr.selected);
+            const tmp = createTmp2(this._courseList);
             render(availableContainer, tmp);
         }
     }
@@ -102,9 +116,9 @@ const Controller = ((view, model) => {
             if (event.target.tagName === "P") {
                 const info = event.target.getAttribute("data-array").split(',');
                 const courseInfo = event.target.getAttribute("data-object");
-                console.log(courseInfo)
+                // console.log(courseInfo)
                 if (event.target.getAttribute("data-clicked") === "false") {
-                    const num = Number(credit.innerHTML) + Number(courseInfo.credit);
+                    const num = Number(credit.innerHTML) + Number(info[2]);
                     if (num > 18) { // overload protection
                         alert("You can only choose up to 18 credits in one semester");
                     }
@@ -118,7 +132,7 @@ const Controller = ((view, model) => {
                 else {
                     event.target.dataset.clicked = "false";
                     event.target.classList.remove("highlighted"); // change background color
-                    const num = Number(credit.innerHTML) - Number(courseInfo.credit);
+                    const num = Number(credit.innerHTML) - Number(info[2]);
                     credit.innerHTML = num; // modify credits
                     infoList.pop();
                 }
@@ -130,12 +144,20 @@ const Controller = ((view, model) => {
 
     const select = (arr) => {
         const selectBtn = document.querySelector(domStr.selectBtn);
+        const availableContainer = document.querySelector(domStr.available);
         const infoList = arr;
         selectBtn.addEventListener("click", (event) => {
             const credit = document.querySelector(domStr.credit);
             const confirmed = confirm("You have chosen " + credit.innerHTML + " credits for this semester. You cannot change once you submit. Do you want to confirm?")
             if(confirmed) {
-
+                selected.newCourseList = infoList; // add course to selected Courses
+                console.log(available.getCourseList)
+                let newList = [...available.getCourseList];
+                for (let info of infoList) {
+                    newList = newList.filter((course) => course.courseName !== info[0]);
+                    console.log(newList)
+                }
+                available.newCourseList = newList;
             }
         })
     }
