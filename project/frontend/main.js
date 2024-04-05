@@ -158,8 +158,8 @@ const Controller = ((view, model) => {
                     // console.log(newList)
                 }
                 available.newCourseList = newList;
+                selectBtn.disabled = true;
             }
-            selectBtn.disabled = true;
         })
     }
 
