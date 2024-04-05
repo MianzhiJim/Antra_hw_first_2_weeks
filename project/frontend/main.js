@@ -146,19 +146,20 @@ const Controller = ((view, model) => {
         const selectBtn = document.querySelector(domStr.selectBtn);
         const availableContainer = document.querySelector(domStr.available);
         const infoList = arr;
-        selectBtn.addEventListener("click", (event) => {
+        selectBtn.addEventListener("click", () => {
             const credit = document.querySelector(domStr.credit);
             const confirmed = confirm("You have chosen " + credit.innerHTML + " credits for this semester. You cannot change once you submit. Do you want to confirm?")
             if(confirmed) {
                 selected.newCourseList = infoList; // add course to selected Courses
-                console.log(available.getCourseList)
+                // console.log(available.getCourseList)
                 let newList = [...available.getCourseList];
                 for (let info of infoList) {
                     newList = newList.filter((course) => course.courseName !== info[0]);
-                    console.log(newList)
+                    // console.log(newList)
                 }
                 available.newCourseList = newList;
             }
+            selectBtn.disabled = true;
         })
     }
 
