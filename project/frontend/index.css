@@ -1,0 +1,35 @@
+body {
+    text-align: center;
+}
+
+li {
+    list-style-type: none;
+    border: solid 1px;
+}
+
+li:nth-child(2n) {
+    background-color: rgb(221, 239, 221);
+}
+
+.highlighted {
+    background-color: deepskyblue;
+}
+
+p {
+    margin-block: 0;
+}
+
+.container {
+    overflow: scroll;
+    border: solid 1px;
+    width: 200px;
+    height: 300px;
+    margin-inline: 200px;
+}
+
+#field {
+    display: flex;
+    width: fit-content;
+    margin-inline: auto;
+    margin-bottom: 50px;
+}
