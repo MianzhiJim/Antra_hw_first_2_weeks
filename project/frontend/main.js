@@ -18,25 +18,14 @@ const View = (() => {
     const createTmp = (arr) => {
         let temp = "";
         arr.forEach(course => {
+            const courseInfo = JSON.stringify(course);
+            // console.log(courseInfo)
             const type = course.required ? "Compulsory" : "Elective";
-            const info = [course.courseName, type, course.credit];
+            // const info = [course.courseName, type, course.credit];
             temp += `<li>
-            <p data-object=${JSON.stringify(course)} data-array="${info}" data-clicked="false">${course.courseName}<br />
+            <p data-json='${courseInfo}' data-clicked="false">${course.courseName}<br />
             Course type: ${type}<br />
             Course credit: ${course.credit}
-            </p>
-            </li>`;
-        });
-        return temp;
-    }
-
-    const createTmp2 = (arr) => {
-        let temp = "";
-        arr.forEach(course => {
-            temp += `<li>
-            <p>${course[0]}<br />
-            Course type: ${course[1]}<br />
-            Course credit: ${course[2]}
             </p>
             </li>`;
         });
@@ -50,14 +39,13 @@ const View = (() => {
     return {
         domStr,
         createTmp,
-        createTmp2,
         render
     }
 })();
 
 const Model = ((view, api) => {
     const {getData} = api;
-    const {domStr, createTmp, createTmp2, render} = view;
+    const {domStr, createTmp, render} = view;
 
     class Available {
         constructor() {
@@ -84,7 +72,7 @@ const Model = ((view, api) => {
         set newCourseList(arr) {
             this._courseList = arr;
             const availableContainer = document.querySelector(domStr.selected);
-            const tmp = createTmp2(this._courseList);
+            const tmp = createTmp(this._courseList);
             render(availableContainer, tmp);
         }
     }
@@ -114,11 +102,10 @@ const Controller = ((view, model) => {
         const infoList = [];
         availableContainer.addEventListener("click", (event) => {
             if (event.target.tagName === "P") {
-                const info = event.target.getAttribute("data-array").split(',');
-                const courseInfo = event.target.getAttribute("data-object");
-                // console.log(courseInfo)
+                // const info = event.target.getAttribute("data-array").split(',');
+                const courseInfo = JSON.parse(event.target.getAttribute("data-json"));
                 if (event.target.getAttribute("data-clicked") === "false") {
-                    const num = Number(credit.innerHTML) + Number(info[2]);
+                    const num = Number(credit.innerHTML) + Number(courseInfo.credit);
                     if (num > 18) { // overload protection
                         alert("You can only choose up to 18 credits in one semester");
                     }
@@ -126,13 +113,13 @@ const Controller = ((view, model) => {
                         event.target.dataset.clicked = "true";
                         event.target.classList.add("highlighted"); // change background color
                         credit.innerHTML = num; // modify credits
-                        infoList.push(info);
+                        infoList.push(courseInfo);
                     }
                 }
                 else {
                     event.target.dataset.clicked = "false";
                     event.target.classList.remove("highlighted"); // change background color
-                    const num = Number(credit.innerHTML) - Number(info[2]);
+                    const num = Number(credit.innerHTML) - Number(courseInfo.credit);
                     credit.innerHTML = num; // modify credits
                     infoList.pop();
                 }
@@ -144,7 +131,7 @@ const Controller = ((view, model) => {
 
     const select = (arr) => {
         const selectBtn = document.querySelector(domStr.selectBtn);
-        const availableContainer = document.querySelector(domStr.available);
+        // const availableContainer = document.querySelector(domStr.available);
         const infoList = arr;
         selectBtn.addEventListener("click", () => {
             const credit = document.querySelector(domStr.credit);
@@ -158,8 +145,8 @@ const Controller = ((view, model) => {
                     // console.log(available.getCourseList)
                     let newList = [...available.getCourseList];
                     for (let info of infoList) {
-                        newList = newList.filter((course) => course.courseName !== info[0]);
-                        // console.log(newList)
+                        newList = newList.filter((course) => course.courseName !== info.courseName);
+                        console.log(newList)
                     }
                     available.newCourseList = newList;
                     selectBtn.disabled = true;
